@@ -19,7 +19,7 @@ def print_scraped():
             print(f"title: {title}")
             print(f"description: {desc}")
             print()
-        print("Gather articles: ", count)
+        print("Gathered articles: ", count)
 
 
 def scrape():
