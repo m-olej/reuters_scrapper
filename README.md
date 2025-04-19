@@ -5,7 +5,7 @@
 ## Sklonuj repo
 
 ```sh
-git clone repo
+git clone https://github.com/m-olej/reuters_scrapper.git
 ```
 
 ## Stwórz venva
@@ -32,6 +32,7 @@ Windows
 
 ```sh
 pip -r install requirements.txt
+playwright install
 ```
 
 # Scrapowanie:
