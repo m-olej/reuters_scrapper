@@ -39,7 +39,7 @@ with sync_playwright() as p:
     page.wait_for_timeout(5000)
 
     html = page.content()  # Get rendered HTML
-    with open(f"html/reuters_{datetime.now()}.html", "w+") as f:
+    with open(f"html/reuters_{datetime.now()}.html".replace(" ", "_"), "w+") as f:
         bs = BeautifulSoup(html, "html.parser")
         f.write(bs.prettify())
     browser.close()
