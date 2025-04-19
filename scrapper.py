@@ -27,7 +27,7 @@ def scrape():
     Scrape all html files in /html
     """
     for html_source in os.listdir("html"):
-        html = open(f"html/{html_source}").read()
+        html = open(f"html/{html_source}", encoding="utf8").read()
 
         soup = BeautifulSoup(html, "html.parser")
 
