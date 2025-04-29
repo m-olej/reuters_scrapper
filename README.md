@@ -5,7 +5,7 @@
 ## Sklonuj repo
 
 ```sh
-git clone https://github.com/m-olej/reuters_scrapper.git
+git clone https://github.com/m-olej/reuters_scrapper.git && cd reuters_scrapper
 ```
 
 ## Stwórz venva
