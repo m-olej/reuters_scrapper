@@ -1,25 +1,47 @@
 from bs4 import BeautifulSoup
 import os
+import sys
+import uuid
+from pathlib import Path
 
 
-def print_scraped():
+def print_scraped(limit: bool):
     separator = "<<SEPARATOR>>"
     new_article = "<<NEW_ARTICLE>>"
-
-    with open("articles.txt", "r+") as f:
+    dups = {}
+    merge("articles")
+    with open("merged_results", "r+") as f:
         file = f.read()
         count = 0
         articles = file.split(new_article)
         for a in articles:
             if a.strip() == "":
                 continue
-            count += 1
             title, desc = a.split(separator)[:-1]
+            if title in dups.keys():
+                continue
+            if limit and desc.strip() == "no description":
+                continue
+
+            count += 1
+            dups[title] = desc
 
             print(f"title: {title}")
             print(f"description: {desc}")
             print()
         print("Gather articles: ", count)
+        print("Duplicates: ", len(dups.keys()) - count)
+
+
+def merge(dir_path: str) -> None:
+    abs_path = Path.resolve(Path(dir_path)).parent
+    dir_path = f"{abs_path}/{dir_path}"
+    print("Provided path: ", dir_path)
+
+    with open("merged_results", "w+") as f:
+        for article in os.listdir(dir_path):
+            f.write(open(f"{dir_path}/{article}", "r").read())
+            # f.write("<<SEPARATOR>><<NEW_ARTICLE>>")
 
 
 def scrape():
@@ -62,7 +84,7 @@ def scrape():
         separator = "<<SEPARATOR>>"
         new_article = "<<NEW_ARTICLE>>"
 
-        with open("articles.txt", "+a") as f:
+        with open(f"articles/articles-{str(uuid.uuid4())}.txt", "+a") as f:
             for article in articles:
                 f.write(f"{article['title']}{separator}")
                 f.write(f"{article['desc']}{separator}")
@@ -70,5 +92,10 @@ def scrape():
 
 
 if __name__ == "__main__":
-    scrape()
-    print_scraped()
+    if "scrape" in sys.argv[1:]:
+        scrape()
+    limit = False
+    if "limit" in sys.argv[1:]:
+        limit = True
+    merge("articles")
+    print_scraped(limit)
